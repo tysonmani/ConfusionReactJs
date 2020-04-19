@@ -69,7 +69,7 @@ const DishDetail = (props) => {
                 </div>
                 <div className="col-12 col-md-5 m-1">
                     <RenderComments comments={props.comments} />
-                    <CommentForm />
+                    <CommentForm addComment={props.addComment} dishId={props.dish.id} />
                 </div>
             </div>
         </div>
@@ -99,6 +99,7 @@ class CommentForm extends Component {
         this.toggleModal();
         console.log("Current State is: " + JSON.stringify(values));
         alert("Current State is: " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     };
 
     render() {
@@ -127,11 +128,11 @@ class CommentForm extends Component {
                                 </Control.select>
                             </div>
                             <div className="form-group">
-                                <Label htmlFor="rating">Your Name</Label>
+                                <Label htmlFor="author">Your Name</Label>
                                 <Control.text
-                                    model=".yourname"
-                                    id="yourname"
-                                    name="yourname"
+                                    model=".author"
+                                    id="author"
+                                    name="author"
                                     placeholder="Your Name"
                                     className="form-control"
                                     validators={{
@@ -142,7 +143,7 @@ class CommentForm extends Component {
                                 />
                                 <Errors
                                     className="text-danger"
-                                    model=".yourname"
+                                    model=".author"
                                     show="touched"
                                     messages={{
                                         required: "Required ",
