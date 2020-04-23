@@ -1,32 +1,58 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
 
 function RenderLeader({leader}) {
-    return(
+    return (
         <div key={leader.id} className="col-12 mt-5">
-            <Media tag="li">
+            <Media>
                 <Media left middle>
-                    <Media object src={leader.image} alt={leader.name} />
+                    <Media object src={baseUrl + leader.image} alt={leader.name} />
                 </Media>
                 <Media body className="col-12">
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
+                    <Media heading>
+                        {leader.name}
+                    </Media>
+                    <h6>{leader.designation}</h6>
                     <p>{leader.description}</p>
-                </Media>    
+                </Media>
             </Media>
         </div>
-    );
+    )
 }
 
 function About(props) {
-
-    const leaders = props.leaders.map((leader) => {
-        return (
-            <RenderLeader leader={leader} />
+    let leaders = "";
+        if (props.leaders.isLoading) {
+        leaders = (
+            <div className="container">
+            <div className="row">
+                <Loading />
+            </div>
+            </div>
         );
-    });
+        } else if (props.leaders.errMess) {
+        leaders = (
+            <div className="container">
+            <div className="row">
+                <h4>{props.errMess}</h4>
+            </div>
+            </div>
+        );
+        } else if (props.leaders.leaders) {
+        leaders = props.leaders.leaders.map((leader, i) => {
+            return (
+            <Fade in>
+                <li className="list-unstyled">
+                <RenderLeader key={i} leader={leader}></RenderLeader>
+                </li>
+            </Fade>
+            );
+        });
+        }
 
     return(
         <div className="container">
@@ -92,4 +118,4 @@ function About(props) {
     );
 }
 
-export default About;
+export default About;    
