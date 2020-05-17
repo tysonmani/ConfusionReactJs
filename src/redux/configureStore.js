@@ -7,9 +7,10 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { createForms } from 'react-redux-form';
 import { InitialFeedback } from './forms';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 export const ConfigureStore = () => {
-    const store = createStore(
+    const store = createStore( 
         combineReducers({
             dishes: Dishes,
             comments: Comments,
@@ -19,7 +20,7 @@ export const ConfigureStore = () => {
                 feedback: InitialFeedback
             })
         }),
-        applyMiddleware(thunk, logger)
+        composeWithDevTools(applyMiddleware(thunk, logger))
     );
 
     return store;
