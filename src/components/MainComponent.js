@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import Home from './HomeComponent';
-import Menu from './MenuComponent';
-import About from './AboutComponent';
-import Contact from './ContactComponent';
-import DishDetail from './DishdetailComponent';
-import Header from './HeaderComponent';
-import Footer from './FooterComponent';
+import React, { Component, Suspense, lazy } from 'react';
+// import Home from './HomeComponent';
+// import Menu from './MenuComponent';
+// import About from './AboutComponent';
+// import Contact from './ContactComponent';
+// import DishDetail from './DishdetailComponent';
+// import Header from './HeaderComponent';
+// import Footer from './FooterComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { postComment, fetchDishes, fetchComments, fetchPromos, 
@@ -57,6 +57,13 @@ const mapDispatchToProps = dispatch => ({
   fetchLeaders: () => dispatch(fetchLeaders())
 });
 
+const Home = lazy(() => import('./HomeComponent'));
+const Menu = lazy(() => import('./MenuComponent'));
+const About = lazy(() => import('./AboutComponent'));
+const Contact = lazy(() => import('./ContactComponent'));
+const DishDetail = lazy(() => import('./DishdetailComponent'));
+const Header = lazy(() => import('./HeaderComponent'));
+const Footer = lazy(() => import('./FooterComponent'));
 
 class Main extends Component {
   onDishSelect(dishId) {
@@ -102,6 +109,7 @@ class Main extends Component {
 
     return (
       <div>
+        <Suspense fallback={<div>Loading...</div>}>
         <Header />
         <div>
           <TransitionGroup>
@@ -140,6 +148,7 @@ class Main extends Component {
           </TransitionGroup>
         </div>
         <Footer />
+        </Suspense>
       </div>
     );
   }
